@@ -1,4 +1,4 @@
-import { IBookRes } from "@/pages/BooksPage/types";
+import { IBookRes } from "@/redux/api/types/books.types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({

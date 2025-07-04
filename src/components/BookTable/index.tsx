@@ -1,6 +1,6 @@
 import { Table } from "antd";
-import { IBook } from "@/pages/BooksPage/types";
-import { getBookCols } from "@/pages/BooksPage/columns";
+import { IBook } from "@/redux/api/types/books.types";
+import { getBookCols } from "./columns";
 
 interface Props {
   rows: IBook[];

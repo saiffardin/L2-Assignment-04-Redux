@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined, SwapOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
 import { Button, Space, Tag } from "antd";
-import { IBook } from "./types";
 import { GENRE_TAG_COLORS } from "@/constants/book-genre";
+import { IBook } from "@/redux/api/types/books.types";
 
 type TypeColRet = TableProps<IBook>["columns"];
 
@@ -41,6 +41,12 @@ export const getBookCols = (props: Props): TypeColRet => {
           )
         );
       },
+    },
+
+    {
+      title: "ISBN",
+      dataIndex: "isbn",
+      key: "isbn",
     },
 
     {
