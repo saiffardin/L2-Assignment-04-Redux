@@ -4,12 +4,16 @@ import { Outlet } from "react-router";
 
 const Layout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar />
-      <main className="flex-1 bg-slate-700 text-white">
-        <Outlet />
-      </main>
-      <Footer />
+    <div className="bg-gray-100">
+      <div className="container min-h-screen flex flex-col mx-auto">
+        <Navbar />
+
+        <main className="flex-1 ">
+          <Outlet />
+        </main>
+
+        <Footer />
+      </div>
     </div>
   );
 };
