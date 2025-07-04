@@ -46,13 +46,22 @@ export const getBookCols = (props: Props): TypeColRet => {
     {
       title: "Copies",
       dataIndex: "copies",
-      key: "Copies",
+      key: "copies",
     },
 
     {
       title: "Availability",
       dataIndex: "availability",
       key: "availability",
+      render: (_, { available }) => {
+        const text = available ? "IN STOCK" : "OUT OF STOCK";
+
+        return (
+          <Tag color={available ? "green" : "red"} key={text}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
     },
 
     {

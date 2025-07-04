@@ -14,3 +14,9 @@ export interface IBook {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IBookRes {
+  success: boolean;
+  message: string;
+  data: IBook[];
+}
