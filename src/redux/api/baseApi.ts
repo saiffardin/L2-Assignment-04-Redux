@@ -1,6 +1,7 @@
 import { RTK_TAGS } from "@/constants/rtk-tags";
 import { IBook, IBookRes } from "@/redux/api/types/books.types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IBorrowRes, ICreateBorrow } from "./types/borrow.types";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
@@ -34,6 +35,16 @@ export const baseApi = createApi({
 
       invalidatesTags: [RTK_TAGS.BOOK],
     }),
+
+    createBorrowBook: builder.mutation<IBorrowRes, ICreateBorrow>({
+      query: (body) => ({
+        url: `borrow`,
+        method: "POST",
+        body,
+      }),
+
+      invalidatesTags: [RTK_TAGS.BOOK],
+    }),
   }),
 });
 
@@ -41,4 +52,5 @@ export const {
   useGetBooksQuery,
   useUpdateBookMutation,
   useDeleteBookMutation,
+  useCreateBorrowBookMutation,
 } = baseApi;

@@ -1,5 +1,13 @@
 import { type ReactNode } from "react";
-import { Form, Input, InputNumber, InputProps, Select, Switch } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  InputProps,
+  Select,
+  Switch,
+} from "antd";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormDataKeys, TypeValidateStatus } from "./types";
 
@@ -9,9 +17,11 @@ interface Props {
   validateStatus?: TypeValidateStatus;
   help?: ReactNode;
   placeholder?: string;
-  type: "text" | "number" | "switch" | "textarea" | "select";
+  type: "text" | "number" | "switch" | "textarea" | "select" | "date";
   required?: boolean;
   options?: string[];
+  minNumber?: number;
+  maxNumber?: number;
 }
 
 const FormInput = (props: Props) => {
@@ -26,6 +36,8 @@ const FormInput = (props: Props) => {
     required = false,
     validateStatus,
     help,
+    minNumber,
+    maxNumber,
   } = props;
 
   return (
@@ -49,7 +61,8 @@ const FormInput = (props: Props) => {
               return (
                 <InputNumber
                   {...field}
-                  min={0}
+                  min={minNumber || 0}
+                  max={maxNumber}
                   placeholder={placeholder}
                   className="w-full"
                 />
@@ -69,6 +82,15 @@ const FormInput = (props: Props) => {
                   {...field}
                   options={options.map((g) => ({ value: g, label: g }))}
                   placeholder={placeholder}
+                  className="w-full"
+                />
+              );
+
+            case "date":
+              return (
+                <DatePicker
+                  {...field}
+                  onChange={(date) => field.onChange(date)}
                   className="w-full"
                 />
               );

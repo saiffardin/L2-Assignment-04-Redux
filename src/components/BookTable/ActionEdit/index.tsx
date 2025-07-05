@@ -69,8 +69,9 @@ const ActionEdit = ({ row }: Props) => {
       </Button>
 
       <Modal
-        title="Book Edit Modal"
+        title="Book Update"
         open={isModalOpen}
+        okText="Submit"
         onOk={handleSubmit(onSubmit as SubmitHandler<unknown>)}
         onCancel={handleCancel}
         confirmLoading={isLoading}

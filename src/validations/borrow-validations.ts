@@ -6,6 +6,7 @@ export const borrowValidations = yup.object({
     .required("Quantity is required")
     .min(1, "Must borrow at least 1 copy")
     .integer("Must be a whole number"),
+
   dueDate: yup
     .date()
     .required("Due date is required")
