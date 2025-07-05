@@ -9,7 +9,7 @@ const BorrowSummaryPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl py-4">Borrowed Books Summary Table</h1>
+      <h1 className="text-2xl py-4 m-2">Borrowed Books Summary Table</h1>
 
       <BorrowSummaryTable rows={data || []} />
     </div>

@@ -9,7 +9,7 @@ const Navbar = () => {
         <Drawer />
       </div>
 
-      <div className="hidden md:flex items-center text-xl font-bold text-gray-900 cursor-default">
+      <div className="hidden md:flex items-center text-xl font-bold text-gray-900 cursor-default mx-2">
         Library Management System
       </div>
 
