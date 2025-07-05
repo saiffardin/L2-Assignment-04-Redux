@@ -31,12 +31,8 @@ const AddNewBook = () => {
   };
 
   const onSubmit = async (data: IBook) => {
-    console.log("submit create book:", data);
-
     if (data.copies === 0) {
-      console.log("====== 0 copies");
       toast.error("Copies can't be 0.");
-
       return;
     }
 

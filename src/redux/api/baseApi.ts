@@ -1,7 +1,12 @@
 import { RTK_TAGS } from "@/constants/rtk-tags";
 import { IBook, IAllBookRes, IBookRes } from "@/redux/api/types/books.types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IBorrowRes, ICreateBorrow } from "./types/borrow.types";
+import {
+  IBorrowedSummaryClient,
+  IBorrowedSummaryRes,
+  IBorrowRes,
+  ICreateBorrow,
+} from "./types/borrow.types";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
@@ -53,7 +58,26 @@ export const baseApi = createApi({
         body,
       }),
 
-      invalidatesTags: [RTK_TAGS.BOOK],
+      invalidatesTags: [RTK_TAGS.BOOK, RTK_TAGS.BORROWED_BOOK],
+    }),
+
+    getBorrowedSummary: builder.query<IBorrowedSummaryClient[], void>({
+      query: () => "/borrow",
+      providesTags: [RTK_TAGS.BORROWED_BOOK],
+
+      transformResponse: (
+        response: IBorrowedSummaryRes
+      ): IBorrowedSummaryClient[] => {
+        const mappedData: IBorrowedSummaryClient[] = response.data.map(
+          (item) => ({
+            totalQuantity: item.totalQuantity,
+            title: item.book.title,
+            isbn: item.book.isbn,
+          })
+        );
+
+        return mappedData;
+      },
     }),
   }),
 });
@@ -64,4 +88,5 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useCreateBorrowBookMutation,
+  useGetBorrowedSummaryQuery,
 } = baseApi;

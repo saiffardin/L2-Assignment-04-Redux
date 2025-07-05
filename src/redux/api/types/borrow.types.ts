@@ -18,3 +18,25 @@ export interface IBorrowRes {
   message: string;
   data: IBorrowBook;
 }
+
+// summary =====================================
+
+export interface IBorrowedSummaryClient {
+  totalQuantity: number;
+  title: string;
+  isbn: string;
+}
+
+export interface IBorrowedSummary {
+  totalQuantity: number;
+  book: {
+    title: string;
+    isbn: string;
+  };
+}
+
+export interface IBorrowedSummaryRes {
+  success: boolean;
+  message: string;
+  data: IBorrowedSummary[];
+}
