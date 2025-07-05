@@ -23,6 +23,10 @@ const ActionEdit = ({ row }: Props) => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Book Updated Successfully!");
+
+      toast.success("You can close the modal.", {
+        duration: 5000,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
