@@ -7,7 +7,14 @@ interface Props {
 }
 
 const BookTable = ({ rows }: Props) => {
-  return <Table<IBook> columns={columns} dataSource={rows} rowKey="_id" />;
+  return (
+    <Table<IBook>
+      columns={columns}
+      dataSource={rows}
+      rowKey="_id"
+      scroll={{ x: "max-content" }}
+    />
+  );
 };
 
 export default BookTable;
