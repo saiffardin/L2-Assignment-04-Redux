@@ -1,110 +1,77 @@
-import { DeleteOutlined, EditOutlined, SwapOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
-import { Button, Space, Tag } from "antd";
+import { Space, Tag } from "antd";
 import { GENRE_TAG_COLORS } from "@/constants/book-genre";
 import { IBook } from "@/redux/api/types/books.types";
+import ActionEdit from "./ActionEdit";
+import ActionDelete from "./ActionDelete";
+import ActionBorrow from "./ActionBorrow";
 
-type TypeColRet = TableProps<IBook>["columns"];
+export const columns: TableProps<IBook>["columns"] = [
+  {
+    title: "Title",
+    dataIndex: "title",
+    key: "title",
+  },
 
-interface Props {
-  onBookEdit: (row: IBook) => void;
-  onBookDelete: (row: IBook) => void;
-  onBookBorrow: (row: IBook) => void;
-}
+  {
+    title: "Author",
+    dataIndex: "author",
+    key: "author",
+  },
 
-export const getBookCols = (props: Props): TypeColRet => {
-  const { onBookEdit, onBookBorrow, onBookDelete } = props;
-
-  return [
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-
-    {
-      title: "Author",
-      dataIndex: "author",
-      key: "author",
-    },
-
-    {
-      title: "Genre",
-      key: "genre",
-      dataIndex: "genre",
-      render: (_, { genre }) => {
-        return (
-          genre && (
-            <Tag color={GENRE_TAG_COLORS[genre]} key={genre}>
-              {genre.toUpperCase()}
-            </Tag>
-          )
-        );
-      },
-    },
-
-    {
-      title: "ISBN",
-      dataIndex: "isbn",
-      key: "isbn",
-    },
-
-    {
-      title: "Copies",
-      dataIndex: "copies",
-      key: "copies",
-    },
-
-    {
-      title: "Availability",
-      dataIndex: "availability",
-      key: "availability",
-      render: (_, { available }) => {
-        const text = available ? "IN STOCK" : "OUT OF STOCK";
-
-        return (
-          <Tag color={available ? "green" : "red"} key={text}>
-            {text.toUpperCase()}
+  {
+    title: "Genre",
+    key: "genre",
+    dataIndex: "genre",
+    render: (_, { genre }) => {
+      return (
+        genre && (
+          <Tag color={GENRE_TAG_COLORS[genre]} key={genre}>
+            {genre.toUpperCase()}
           </Tag>
-        );
-      },
+        )
+      );
     },
+  },
 
-    {
-      title: "Action",
-      key: "action",
-      render: (_, row) => {
-        return (
-          <Space size="middle">
-            <Button
-              color="blue"
-              variant="filled"
-              title="Edit Book"
-              onClick={() => onBookEdit(row)}
-            >
-              <EditOutlined />
-            </Button>
+  {
+    title: "ISBN",
+    dataIndex: "isbn",
+    key: "isbn",
+  },
 
-            <Button
-              color="danger"
-              variant="filled"
-              title="Delete Book"
-              onClick={() => onBookDelete(row)}
-            >
-              <DeleteOutlined />
-            </Button>
+  {
+    title: "Copies",
+    dataIndex: "copies",
+    key: "copies",
+  },
 
-            <Button
-              color="purple"
-              variant="filled"
-              title="Borrow Book"
-              onClick={() => onBookBorrow(row)}
-            >
-              <SwapOutlined />
-            </Button>
-          </Space>
-        );
-      },
+  {
+    title: "Availability",
+    dataIndex: "availability",
+    key: "availability",
+    render: (_, { available }) => {
+      const text = available ? "IN STOCK" : "OUT OF STOCK";
+
+      return (
+        <Tag color={available ? "green" : "red"} key={text}>
+          {text.toUpperCase()}
+        </Tag>
+      );
     },
-  ];
-};
+  },
+
+  {
+    title: "Action",
+    key: "action",
+    render: (_, row) => {
+      return (
+        <Space size="middle">
+          <ActionEdit row={row} />
+          <ActionDelete row={row} />
+          <ActionBorrow row={row} />
+        </Space>
+      );
+    },
+  },
+];
