@@ -33,7 +33,7 @@ export const bookValidations = yup.object().shape({
   copies: yup
     .number()
     .required("Number of copies is required")
-    .min(1, "Must have at least 1 copy")
+    .min(0, "Must be a positive number")
     .integer("Must be a whole number"),
 
   available: yup.boolean().required(),

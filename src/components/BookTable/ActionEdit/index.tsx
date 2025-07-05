@@ -1,12 +1,14 @@
 import { IBook } from "@/redux/api/types/books.types";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, Modal } from "antd";
-import { useState } from "react";
+import { Button, Modal } from "antd";
+import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { bookValidations, TBookFormData } from "@/validations/book-validations";
-import FormInput from "@/components/FormInput";
-import { BOOK_GENRE } from "@/constants/book-genre";
+
+import { useUpdateBookMutation } from "@/redux/api/baseApi";
+import EditForm from "./EditForm";
+import toast from "react-hot-toast";
 
 interface Props {
   row: IBook;
@@ -15,16 +17,31 @@ interface Props {
 const ActionEdit = ({ row }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [updateBook, { isLoading, isSuccess }] = useUpdateBookMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Book Updated Successfully!");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
   const methods = useForm<TBookFormData>({
     resolver: yupResolver(bookValidations),
-    defaultValues: row,
+    defaultValues: {},
+
+    values: {
+      title: row?.title || "",
+      author: row?.author || "",
+      genre: row?.genre || "FANTASY",
+      available: (row?.copies && row?.copies > 0) || false,
+      copies: row?.copies || 0,
+      isbn: row?.isbn || "",
+      description: row?.description || "",
+    },
   });
 
-  const {
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit, reset } = methods;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -36,9 +53,7 @@ const ActionEdit = ({ row }: Props) => {
   };
 
   const onSubmit = async (data: IBook) => {
-    console.log("================");
-    console.log("on edit row:", row);
-    console.log("on edit submit:", data);
+    await updateBook({ _id: row?._id, ...data }).unwrap();
   };
 
   return (
@@ -48,84 +63,19 @@ const ActionEdit = ({ row }: Props) => {
         variant="filled"
         title="Edit Book"
         onClick={showModal}
+        disabled={isLoading}
       >
         <EditOutlined />
       </Button>
-
       <Modal
         title="Book Edit Modal"
         open={isModalOpen}
         onOk={handleSubmit(onSubmit as SubmitHandler<unknown>)}
         onCancel={handleCancel}
+        confirmLoading={isLoading}
       >
         <FormProvider {...methods}>
-          <Form layout="vertical" className="mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-              <FormInput
-                label="Title"
-                registerName="title"
-                type="text"
-                placeholder="Enter book title"
-                required
-                validateStatus={errors.title ? "error" : ""}
-                help={errors.title?.message}
-              />
-
-              <FormInput
-                label="Author"
-                registerName="author"
-                type="text"
-                placeholder="Enter author name"
-                required
-                validateStatus={errors.author ? "error" : ""}
-                help={errors.author?.message}
-              />
-
-              <FormInput
-                label="Genre"
-                registerName="genre"
-                type="select"
-                options={[...BOOK_GENRE]}
-                required
-                placeholder="Select one genre"
-                validateStatus={errors.genre ? "error" : ""}
-                help={errors.genre?.message}
-              />
-
-              <FormInput
-                label="ISBN"
-                registerName="isbn"
-                type="text"
-                placeholder="Enter ISBN"
-                required
-                validateStatus={errors.isbn ? "error" : ""}
-                help={errors.isbn?.message}
-              />
-
-              <FormInput
-                label="Copies"
-                registerName="copies"
-                type="number"
-                placeholder="Enter number of copies"
-                required
-                validateStatus={errors.copies ? "error" : ""}
-                help={errors.copies?.message}
-              />
-
-              <FormInput
-                label="Available"
-                registerName="available"
-                type="switch"
-              />
-            </div>
-
-            <FormInput
-              label="Description"
-              registerName="description"
-              type="textarea"
-              placeholder="Enter book description"
-            />
-          </Form>
+          <EditForm />
         </FormProvider>
       </Modal>
     </>

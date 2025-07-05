@@ -3,9 +3,7 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import BookTable from "@/components/BookTable";
 
 const BooksPage = () => {
-  const { data, isLoading, isError } = useGetBooksQuery();
-
-  console.log({ data, isLoading, isError });
+  const { data, isLoading } = useGetBooksQuery();
 
   if (isLoading) return <FullScreenLoader />;
 
