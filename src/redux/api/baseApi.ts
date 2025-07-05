@@ -25,7 +25,20 @@ export const baseApi = createApi({
 
       invalidatesTags: [RTK_TAGS.BOOK],
     }),
+
+    deleteBook: builder.mutation<IBookRes, IBook>({
+      query: ({ _id }) => ({
+        url: `books/${_id}`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: [RTK_TAGS.BOOK],
+    }),
   }),
 });
 
-export const { useGetBooksQuery, useUpdateBookMutation } = baseApi;
+export const {
+  useGetBooksQuery,
+  useUpdateBookMutation,
+  useDeleteBookMutation,
+} = baseApi;

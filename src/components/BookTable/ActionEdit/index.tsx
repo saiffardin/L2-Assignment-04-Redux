@@ -67,6 +67,7 @@ const ActionEdit = ({ row }: Props) => {
       >
         <EditOutlined />
       </Button>
+
       <Modal
         title="Book Edit Modal"
         open={isModalOpen}
