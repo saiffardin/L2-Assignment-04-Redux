@@ -7,8 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { bookValidations, TBookFormData } from "@/validations/book-validations";
 
 import { useUpdateBookMutation } from "@/redux/api/baseApi";
-import EditForm from "./EditForm";
+
 import toast from "react-hot-toast";
+import BookForm from "@/components/BookForm";
 
 interface Props {
   row: IBook;
@@ -53,7 +54,12 @@ const ActionEdit = ({ row }: Props) => {
   };
 
   const onSubmit = async (data: IBook) => {
-    await updateBook({ _id: row?._id, ...data }).unwrap();
+    try {
+      await updateBook({ _id: row?._id, ...data }).unwrap();
+    } catch (error) {
+      console.log(error);
+      toast.error("Book update failed.");
+    }
   };
 
   return (
@@ -77,7 +83,7 @@ const ActionEdit = ({ row }: Props) => {
         confirmLoading={isLoading}
       >
         <FormProvider {...methods}>
-          <EditForm />
+          <BookForm />
         </FormProvider>
       </Modal>
     </>

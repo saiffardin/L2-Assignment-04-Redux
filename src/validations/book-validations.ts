@@ -13,11 +13,6 @@ export const bookValidations = yup.object().shape({
     .required("Author is required")
     .min(1, "Author cannot be empty"),
 
-  // genre: yup
-  //   .string()
-  //   .required("Genre is required")
-  //   .min(1, "Genre cannot be empty"),
-
   genre: yup
     .mixed<BookGenreType>()
     .oneOf(BOOK_GENRE)
@@ -36,7 +31,7 @@ export const bookValidations = yup.object().shape({
     .min(0, "Must be a positive number")
     .integer("Must be a whole number"),
 
-  available: yup.boolean().required(),
+  available: yup.boolean().default(true),
 });
 
 export type TBookFormData = yup.InferType<typeof bookValidations>;

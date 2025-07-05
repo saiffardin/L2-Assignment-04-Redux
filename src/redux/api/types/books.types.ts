@@ -15,8 +15,14 @@ export interface IBook {
   updatedAt?: string;
 }
 
-export interface IBookRes {
+export interface IAllBookRes {
   success: boolean;
   message: string;
   data: IBook[];
+}
+
+export interface IBookRes {
+  success: boolean;
+  message: string;
+  data: IBook;
 }

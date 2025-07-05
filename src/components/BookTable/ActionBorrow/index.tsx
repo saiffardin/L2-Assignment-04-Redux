@@ -13,6 +13,7 @@ import FormInput from "@/components/FormInput";
 import { useCreateBorrowBookMutation } from "@/redux/api/baseApi";
 import { useNavigate } from "react-router";
 import { PATHS } from "@/constants/paths";
+import toast from "react-hot-toast";
 
 interface Props {
   row: IBook;
@@ -27,6 +28,7 @@ const ActionBorrow = ({ row }: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
+      toast.success("Book Borrowed Successfully!", { duration: 5000 });
       navigate(PATHS.BORROWED_BOOK_SUMMARY);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,11 +56,16 @@ const ActionBorrow = ({ row }: Props) => {
 
   const onSubmit = async (data: IBorrowBook) => {
     if (row?._id && data?.dueDate && data.quantity) {
-      await createBorrow({
-        book: row?._id,
-        dueDate: new Date(data?.dueDate).toISOString(),
-        quantity: data.quantity,
-      }).unwrap();
+      try {
+        await createBorrow({
+          book: row?._id,
+          dueDate: new Date(data?.dueDate).toISOString(),
+          quantity: data.quantity,
+        }).unwrap();
+      } catch (error) {
+        console.log(error);
+        toast.error("New borrowed book creation failed.");
+      }
     }
   };
 

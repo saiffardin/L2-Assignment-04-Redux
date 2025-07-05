@@ -3,7 +3,7 @@ import FormInput from "@/components/FormInput";
 import { BOOK_GENRE } from "@/constants/book-genre";
 import { useFormContext } from "react-hook-form";
 
-const EditForm = () => {
+const BookForm = () => {
   const {
     formState: { errors },
   } = useFormContext();
@@ -75,4 +75,4 @@ const EditForm = () => {
   );
 };
 
-export default EditForm;
+export default BookForm;

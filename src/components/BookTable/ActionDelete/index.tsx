@@ -24,10 +24,15 @@ const ActionDelete = ({ row }: Props) => {
     destroy: () => void;
     update: (configUpdate: ConfigUpdate) => void;
   }) => {
-    modal.update({
-      okButtonProps: { loading: true, disabled: true },
-    });
-    await deleteBook(row).unwrap();
+    try {
+      modal.update({
+        okButtonProps: { loading: true, disabled: true },
+      });
+      await deleteBook(row).unwrap();
+    } catch (error) {
+      console.log(error);
+      toast.error("Book deletion failed.");
+    }
   };
 
   const handleConfirmDelete = () => {

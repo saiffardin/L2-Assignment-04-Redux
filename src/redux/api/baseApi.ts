@@ -1,5 +1,5 @@
 import { RTK_TAGS } from "@/constants/rtk-tags";
-import { IBook, IBookRes } from "@/redux/api/types/books.types";
+import { IBook, IAllBookRes, IBookRes } from "@/redux/api/types/books.types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IBorrowRes, ICreateBorrow } from "./types/borrow.types";
 
@@ -12,14 +12,24 @@ export const baseApi = createApi({
   tagTypes: [RTK_TAGS.BOOK, RTK_TAGS.BORROWED_BOOK],
 
   endpoints: (builder) => ({
-    getBooks: builder.query<IBookRes, void>({
+    createBook: builder.mutation<IBookRes, IBook>({
+      query: (body) => ({
+        url: `/books`,
+        method: "POST",
+        body,
+      }),
+
+      invalidatesTags: [RTK_TAGS.BOOK],
+    }),
+
+    getBooks: builder.query<IAllBookRes, void>({
       query: () => "/books?limit=100",
       providesTags: [RTK_TAGS.BOOK],
     }),
 
     updateBook: builder.mutation<IBookRes, IBook>({
       query: ({ _id, ...patch }) => ({
-        url: `books/${_id}`,
+        url: `/books/${_id}`,
         method: "PATCH",
         body: patch,
       }),
@@ -29,7 +39,7 @@ export const baseApi = createApi({
 
     deleteBook: builder.mutation<IBookRes, IBook>({
       query: ({ _id }) => ({
-        url: `books/${_id}`,
+        url: `/books/${_id}`,
         method: "DELETE",
       }),
 
@@ -38,7 +48,7 @@ export const baseApi = createApi({
 
     createBorrowBook: builder.mutation<IBorrowRes, ICreateBorrow>({
       query: (body) => ({
-        url: `borrow`,
+        url: `/borrow`,
         method: "POST",
         body,
       }),
@@ -49,6 +59,7 @@ export const baseApi = createApi({
 });
 
 export const {
+  useCreateBookMutation,
   useGetBooksQuery,
   useUpdateBookMutation,
   useDeleteBookMutation,
